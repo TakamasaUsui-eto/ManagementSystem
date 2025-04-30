@@ -8,7 +8,7 @@ use App\Models\Company;
 
 class ProductsController extends Controller
 {
-    
+
     public function index(Request $request) {
         $search = $request->input('search');
         $maker = $request->input('maker');
@@ -35,16 +35,8 @@ class ProductsController extends Controller
         return view('products.create', compact('companies'));
     }
     
-    public function store(Request $request) {
-        // フォームデータのバリデーション
-        $validated_data = $request->validate([
-            'product_name' => 'required',
-            'company_id' => 'required',
-            'price' => 'required|numeric',
-            'stock' => 'required|numeric',
-            'comment' => 'nullable','img_path' => 'nullable|image|max:2048'
-        ]);
-
+    public function store(ProductRequest $request) {
+        
         // 新しい商品インスタンスを作成
         $product = new Product();
         $product->product_name = $validated_data['product_name'];
@@ -67,16 +59,7 @@ class ProductsController extends Controller
         return redirect()->route('products.index');
     }
 
-    public function update(Request $request, $id) {
-        // フォームデータのバリデーション
-        $validated_data = $request->validate([
-            'product_name' => 'required',
-            'company_id' => 'required',
-            'price' => 'required|numeric',
-            'stock' => 'required|numeric',
-            'comment' => 'nullable',
-            'img_path' => 'nullable',
-        ]);
+    public function update(ProductRequest $request, $id) {
 
         // 商品インスタンスを取得
         $product = Product::find($id);
