@@ -16,9 +16,12 @@
             <div>
             <form action="{{ route('products.index') }}" method="GET">
                 <input type="text" name="search" value="{{ old('search') }}" placeholder="検索キーワード">
-                <select name="maker">
-                    <option value="">メーカー名※未実装</option>
-                </select>
+                    <select name="maker">
+                        <option value="">メーカー名</option>
+                        @foreach($companies as $company)
+                            <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                        @endforeach
+                    </select>
                 <input type="submit" value="検索">
             </form>
 

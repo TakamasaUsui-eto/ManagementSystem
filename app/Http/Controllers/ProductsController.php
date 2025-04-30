@@ -8,19 +8,26 @@ use App\Models\Company;
 
 class ProductsController extends Controller
 {
-
+    
     public function index(Request $request) {
-            
         $search = $request->input('search');
+        $maker = $request->input('maker');
+    
+        $products = Product::query();
     
         if (!empty($search)) {
-            $products = Product::where('product_name', 'like', "%{$search}%");
-        } else {
-            $products = Product::query();
+            $products = $products->where('product_name', 'like', "%{$search}%");
         }
     
-        $products = $products->paginate(10)->appends(['search' => $search]);
-        return view('products.index', compact('products'));
+        if (!empty($maker)) {
+            $products = $products->where('company_id', $maker);
+        }
+    
+        $products = $products->paginate(10)->appends(['search' => $search, 'maker' => $maker]);
+    
+        $companies = Company::all();
+    
+        return view('products.index', compact('products', 'companies'));
     }
 
     public function create() {
