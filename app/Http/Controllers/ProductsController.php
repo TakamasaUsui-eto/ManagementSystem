@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Company;
 
-class ProductsController extends Controller
-{
+class ProductsController extends Controller {
 
     public function index(Request $request) {
         $search = $request->input('search');
@@ -36,61 +35,76 @@ class ProductsController extends Controller
     }
     
     public function store(ProductRequest $request) {
-        
-        // 新しい商品インスタンスを作成
-        $product = new Product();
-        $product->product_name = $validated_data['product_name'];
-        $product->company_id = $validated_data['company_id'];
-        $product->price = $validated_data['price'];
-        $product->stock = $validated_data['stock'];
-        $product->comment = $validated_data['comment'];
+        try {
 
-        // 画像パスを保存
-        if ($request->hasFile('img_path')) {
-            $image = $request->file('img_path');
-            $image_name = '../../images/' . $image->getClientOriginalName();
-            $product->img_path = $image_name;
+            // 新しい商品インスタンスを作成
+            $product = new Product();
+            $product->product_name = $validated_data['product_name'];
+            $product->company_id = $validated_data['company_id'];
+            $product->price = $validated_data['price'];
+            $product->stock = $validated_data['stock'];
+            $product->comment = $validated_data['comment'];
+
+            // 画像パスを保存
+            if ($request->hasFile('img_path')) {
+                $image = $request->file('img_path');
+                $image_name = '../../images/' . $image->getClientOriginalName();
+                $product->img_path = $image_name;
+            }
+
+            // 商品をデータベースに保存
+            $product->save();
+
+            // 商品一覧ページにリダイレクト
+            return redirect()->route('products.index');
+        } catch (\Exception $e) {
+            // エラーが発生した場合の処理
+            return redirect()->back()->withInput()->withErrors(['error' => '新規登録に失敗しました。']);
         }
-
-        // 商品をデータベースに保存
-        $product->save();
-
-        // 商品一覧ページにリダイレクト
-        return redirect()->route('products.index');
     }
 
     public function update(ProductRequest $request, $id) {
+        try {
 
-        // 商品インスタンスを取得
-        $product = Product::find($id);
+            // 商品インスタンスを取得
+            $product = Product::find($id);
 
-        // 商品情報を更新
-        $product->product_name = $validated_data['product_name'];
-        $product->company_id = $validated_data['company_id'];
-        $product->price = $validated_data['price'];
-        $product->stock = $validated_data['stock'];
-        $product->comment = $validated_data['comment'];
+            // 商品情報を更新
+            $product->product_name = $validated_data['product_name'];
+            $product->company_id = $validated_data['company_id'];
+            $product->price = $validated_data['price'];
+            $product->stock = $validated_data['stock'];
+            $product->comment = $validated_data['comment'];
 
-        // 画像パスを更新
-        if ($request->hasFile('img_path')) {
-            $image = $request->file('img_path');
-            $image_name = '../../images/' . $image->getClientOriginalName();
-            $product->img_path = $image_name;
+            // 画像パスを更新
+            if ($request->hasFile('img_path')) {
+                $image = $request->file('img_path');
+                $image_name = '../../images/' . $image->getClientOriginalName();
+                $product->img_path = $image_name;
+            }
+
+            // 商品をデータベースに保存
+            $product->save();
+
+            // 自画面にリダイレクト
+            return redirect()->back(); 
+        } catch (\Exception $e) {
+            // エラーが発生した場合の処理
+            return redirect()->back()->withInput()->withErrors(['error' => '更新に失敗しました。']);
         }
-
-        // 商品をデータベースに保存
-        $product->save();
-
-        // 自画面にリダイレクト
-        return redirect()->back();
     }
 
     public function destroy($id) {
+        try {
 
-        // 商品を削除
-        $product = Product::find($id);
-        $product->delete();
-        return redirect()->route('products.index');
+            // 商品を削除
+            $product = Product::find($id);
+            $product->delete();
+            return redirect()->route('products.index');
+        } catch (\Exception $e) {
+            // エラーが発生した場合の処理
+            return redirect()->back()->withErrors(['error' => '削除に失敗しました。']);
+        }
     }
 
     public function show($id) {
