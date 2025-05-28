@@ -15,7 +15,7 @@
                             <label for="product_name" class="col-md-4 col-form-label text-md-end">{{ __('商品名') }}<span style="color: red">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="product_name" type="text" class="form-control @error('product_name') is-invalid @enderror" name="product_name" value="{{ old('product_name') }}" autocomplete="product_name" autofocus required>
+                                <input id="product_name" type="text" class="form-control @error('product_name') is-invalid @enderror" name="product_name" value="{{ old('product_name') }}" autocomplete="product_name" autofocus>
 
                                 @error('product_name')
                                     <span class="invalid-feedback" role="alert">
@@ -29,7 +29,7 @@
                             <label for="company_id" class="col-md-4 col-form-label text-md-end">{{ __('メーカー名') }}<span style="color: red">*</span></label>
 
                             <div class="col-md-6">
-                                <select id="company_id" class="form-control @error('company_id') is-invalid @enderror" name="company_id" required>
+                                <select id="company_id" class="form-control @error('company_id') is-invalid @enderror" name="company_id">
                                         <option hidden value="">メーカー名を選択してください</option>
                                     @foreach($companies as $company)
                                         <option value="{{ $company->id }}">{{ $company->company_name }}</option>
@@ -48,7 +48,7 @@
                             <label for="price" class="col-md-4 col-form-label text-md-end">{{ __('価格') }}<span style="color: red">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="price" type="number" min="0" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}" autocomplete="price" required>
+                                <input id="price" type="number" min="0" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}" autocomplete="price">
 
                                 @error('price')
                                     <span class="invalid-feedback" role="alert">
@@ -62,7 +62,7 @@
                             <label for="stock" class="col-md-4 col-form-label text-md-end">{{ __('在庫数') }}<span style="color: red">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="stock" type="number" min="0" class="form-control @error('stock') is-invalid @enderror" name="stock" value="{{ old('stock') }}" autocomplete="stock" required>
+                                <input id="stock" type="number" min="0" class="form-control @error('stock') is-invalid @enderror" name="stock" value="{{ old('stock') }}" autocomplete="stock">
 
                                 @error('stock')
                                     <span class="invalid-feedback" role="alert">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Company;
@@ -36,6 +37,9 @@ class ProductsController extends Controller {
     
     public function store(ProductRequest $request) {
         try {
+            
+            // バリデーションされたデータを取得
+            $validated_data = $request->validated();
 
             // 新しい商品インスタンスを作成
             $product = new Product();
@@ -65,6 +69,9 @@ class ProductsController extends Controller {
 
     public function update(ProductRequest $request, $id) {
         try {
+
+            // バリデーションされたデータを取得
+            $validated_data = $request->validated();
 
             // 商品インスタンスを取得
             $product = Product::find($id);
